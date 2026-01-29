@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather App</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #4facfe, #00f2fe);
+      }
+
+      .container {
+        background: white;
+        padding: 30px 40px;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        text-align: center;
+        width: 350px;
+      }
+
+      h1 {
+        margin-bottom: 20px;
+        color: #333;
+      }
+
+      .input-container {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      input {
+        flex: 1;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+      }
+
+      input:focus {
+        outline: none;
+        border-color: #4facfe;
+      }
+
+      button {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 8px;
+        background: #4facfe;
+        color: white;
+        cursor: pointer;
+        font-weight: bold;
+        transition: 0.3s;
+      }
+
+      button:hover {
+        background: #00c6ff;
+      }
+
+      #weather-info {
+        margin-top: 15px;
+      }
+
+      #city-name {
+        font-size: 20px;
+        font-weight: bold;
+      }
+
+      #temperature {
+        font-size: 18px;
+        margin: 5px 0;
+      }
+
+      #description {
+        font-size: 16px;
+        color: #555;
+      }
+
+      #error-message {
+        color: red;
+        margin-top: 10px;
+        font-size: 14px;
+      }
+
+      .hidden {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Weather App</h1>
+
+      <div class="input-container">
+        <input type="text" id="city-input" placeholder="Enter city name" />
+        <button id="get-weather-btn">Get Weather</button>
+      </div>
+
+      <div id="weather-info" class="hidden">
+        <h2 id="city-name"></h2>
+        <p id="temperature"></p>
+        <p id="description"></p>
+      </div>
+
+      <p id="error-message" class="hidden">City not found. Please try again.</p>
+    </div>
+    <script>
+
+       document.addEventListener("DOMContentLoaded",()=>{
+      let Input = document.getElementById("city-input");
+      let Btn = document.getElementById("get-weather-btn");
+      let ErrorMssge = document.getElementById("error-message");
+      let cityname = document.getElementById("city-name");
+      let temperature = document.getElementById("temperature");
+      let  description = document.getElementById("description");
+      let  weatherinfo = document.getElementById("weather-info");
+      
+      Btn.addEventListener("click", async ()=>{
+
+            let InputValue = Input.value.trim();
+            if(InputValue ===""){
+            alert("please enter city");
+            return ;}
+
+             const apiKey = "ff330311b818138961f6049a61d2119c";
+
+     let  url =(`https://api.openweathermap.org/data/2.5/weather?q=${InputValue}&appid=${apiKey}&units=metric`);
+
+         let response = await fetch(url);
+        let data = await response.json();
+console.log(data);
+
+
+try{
+ display()
+}
+catch(error){
+  showError(); 
+};
+ 
+          function display(){
+
+ const {name,main,weather} = data;
+            cityname.textContent= data.name;
+            temperature.textContent=`Temperature : ${data.main.temp}C`;
+            description.textContent=`Weather : ${data.weather[0].description}`;
+          
+        weatherinfo.classList.remove("hidden");
+        ErrorMssge.classList.add("hidden")
+             
+          }
+            function showError() {
+    weatherinfo.classList.add("hidden");
+    ErrorMssge.classList.remove("hidden");
+  }
+ 
+      })
+            
+
+      })
+    </script>
+  </body>
+</html>
