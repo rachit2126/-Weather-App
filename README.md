@@ -71,9 +71,6 @@ Data is requested using this format:
 
 https://api.openweathermap.org/data/2.5/weather?q=CITY_NAME&appid=API_KEY&units=metric
 
-yaml
-Copy code
-
 ---
 
 ## 📂 Project Structure
